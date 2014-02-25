@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Telescoping animation</title></title>
+    <link rel="stylesheet" href="../include/style.css">
+  </head>
+  <body>
+    <header>
+      Example from Chapter 2 inCore HTML5 Canvas book (P. 196)
+    </header>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <aside>Click on canvas element.</aside>
+    
+    <script src="../js/utils.js"></script>
+    <script>
+        
+        // Default: https://lh6.googleusercontent.com/-aI8o5yq442E/AAAAAAAAAAI/AAAAAAAAAAA/B6Za143Y-Ak/photo.jpg?sz=120
+        // mine; https://lh4.googleusercontent.com/-tmAev2O_eS4/AAAAAAAAAAI/AAAAAAAAAEA/LRWpP0Qxwlg/s120-c/photo.jpg
+    window.onload = function () {
+        var Math = window.Math,
+            canvas = document.getElementById('canvas'),
+            context = canvas.getContext('2d');
+        
+        function drawText() {
+            context.save();
+            context.shadowColor = 'rgba(100, 100, 150, 0.8)';
+            context.shadowOffsetX = 5;
+            context.shadowOffsetY = 5;
+            context.shadowBlur = 10;
+            
+            context.fillStyle = 'cornflowerblue';
+            context.fillText('HTML5', 20, 250);
+            context.strokeStyle = 'yellow';
+            context.strokeText('HTML5', 20, 250);
+            context.restore();
+        }
+        
+        
+        function setClippingRegion(radius) {
+            context.beginPath();
+            context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI*2, false);
+            context.clip();
+        }
+        
+        function fillCanvas(color) {
+            context.fillStyle = color;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function endAnimation(loop) {
+            //window.cancelAnimationFrame(loop)
+            window.clearInterval(loop);
+            
+            window.setTimeout(function () {
+                context.clearRect(0, 0 , canvas.width, canvas.height);
+                drawText();
+            }, 1000);
+        }
+        
+        function drawAnimationFrame(radius) {
+            setClippingRegion(radius);
+            fillCanvas('lightgray');
+            drawText();
+        }
+        
+        function animate() {
+            var radius = canvas.width / 2,
+                loop;
+            
+            loop = window.setInterval(function () {
+                radius -= canvas.width/100;
+                
+                fillCanvas('charcoal');
+                
+                if (radius > 0) {
+                    context.save()
+                    drawAnimationFrame(radius);
+                    context.restore();
+                } else {
+                    endAnimation(loop);
+                }
+            }, 16);
+        }
+        
+        canvas.onmousedown = animate;
+        
+        // Init
+        context.lineWidth = 0.5;
+        context.font = '128pt Comic-sans';
+        drawText();
+        
+        /*
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (ball.x > canvas.width) {
+                ball.x -= 1;
+            } else if (ball.x > 0) {
+                ball.x += 1;
+            }
+            console.log(ball.x)
+            ball.y = canvas.height / 2 + Math.sin(angle) * 50;
+            angle += 0.1;
+            ball.draw(context);
+        })();*/
+    };
+    </script>
+  </body>
+</html>
