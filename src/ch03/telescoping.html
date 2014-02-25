@@ -25,7 +25,11 @@
     window.onload = function () {
         var Math = window.Math,
             canvas = document.getElementById('canvas'),
-            context = canvas.getContext('2d');
+            context = canvas.getContext('2d'),
+            defaultBg = new Image(),
+            profileBg = new Image();
+        
+        
         
         function drawText() {
             context.save();
@@ -38,6 +42,8 @@
             context.fillText('HTML5', 20, 250);
             context.strokeStyle = 'yellow';
             context.strokeText('HTML5', 20, 250);
+            context.drawImage(defaultBg, (canvas.width / 2) - (defaultBg.width /2), (canvas.height / 2) - (defaultBg.height / 2));
+            context.drawImage(profileBg, profileBg.width, profileBg.height);
             context.restore();
         }
         
@@ -93,9 +99,14 @@
         canvas.onmousedown = animate;
         
         // Init
-        context.lineWidth = 0.5;
-        context.font = '128pt Comic-sans';
-        drawText();
+        
+        defaultBg.onload = function () {
+            context.lineWidth = 0.5;
+            context.font = '128pt Comic-sans';
+            drawText();
+        };
+        defaultBg.src = 'https://lh6.googleusercontent.com/-aI8o5yq442E/AAAAAAAAAAI/AAAAAAAAAAA/B6Za143Y-Ak/photo.jpg?sz=120';
+        profileBg.src = 'https://lh4.googleusercontent.com/-tmAev2O_eS4/AAAAAAAAAAI/AAAAAAAAAEA/LRWpP0Qxwlg/s120-c/photo.jpg';
         
         /*
         ball.x = canvas.width / 2;
