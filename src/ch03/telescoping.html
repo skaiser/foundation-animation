@@ -65,15 +65,17 @@
         }
         
         function animate() {
-            var radius = canvas.width / 2,
+            var radius = 100,//canvas.width / 2,
                 loop;
             
             loop = window.setInterval(function () {
-                radius -= canvas.width/100;
+                //radius -= canvas.width/100;
+                radius += canvas.width/100;
                 
                 fillCanvas('charcoal');
                 
-                if (radius > 0) {
+                //if (radius > 0) {
+                if (radius < canvas.width) {
                     context.save()
                     drawAnimationFrame(radius);
                     context.restore();
