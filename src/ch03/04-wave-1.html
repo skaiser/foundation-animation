@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Linear motion wave example</title>
+  </head>
+  <body>
+    <header>
+      Linear motion wave example
+    </header>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <aside>Click on canvas element.</aside>
+    
+    <script src="../js/utils.js"></script>
+    <script src="Ball.js"></script>
+    <script>
+        
+        window.onload = function () {
+            
+            var utils = window.utils,
+                Math = window.Math,
+                canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ball = new Ball(),
+                angle = 0,
+                centerY = 200,
+                range = 50,
+                xspeed = 1,
+                yspeed = 0.05;
+                
+            
+            ball.x = 0;
+            
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // reverse if we hit the boundaries
+                if (ball.x >= canvas.width) {
+                    xspeed = -Math.abs(xspeed);
+                    console.log(xspeed);
+                } else if (ball.x <= 0) {
+                    xspeed = Math.abs(xspeed);
+                    console.log(xspeed);
+                }
+                
+                ball.x += xspeed;
+                ball.y = centerY / 2 + Math.sin(angle) * range;
+                angle += 0.1;
+                ball.draw(context);
+            })();
+        };
+    </script>
+    
+  </body>
+</html>
