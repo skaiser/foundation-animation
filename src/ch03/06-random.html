@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Waves with two angles</title>
+  </head>
+  <body>
+    <header>
+      Waves with two angles
+    </header>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <aside>Click on canvas element.</aside>
+    
+    <script src="../js/utils.js"></script>
+    <script src="Ball.js"></script>
+    <script>
+        
+        window.onload = function () {
+            
+            var utils = window.utils,
+                Math = window.Math,
+                canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ball = new Ball(),
+                angleX = 0,
+                angleY = 0,
+                range = 50,
+                centerX = canvas.width / 2,
+                centerY = canvas.height / 2,
+                xspeed = 0.07,
+                yspeed = 0.11,
+                
+                ball2 = new Ball(25, '#ffffff'),
+                
+                ball3 = new Ball(10),
+                
+                // Moves in a straight diagonal angle because speeds are the same and radis is an even number
+                ball4 = new Ball(15, '#336633'),
+                angleX4 = 0,
+                angleY4 = 0,
+                xspeed4 = 0.07,
+                yspeed4 = 0.07,
+                
+                
+                // Moves in a straight diagonal angle because speeds are the same and radis is an even number
+                ball5 = new Ball(4, '#53fe4a'),
+                angleX5 = 0,
+                angleY5 = 0,
+                xspeed5 = 0.05,
+                yspeed5 = 0.05,
+                
+                
+                ball6 = new Ball(8, '#63fe4a'),
+                angleX6 = 0,
+                angleY6 = 0,
+                xspeed6 = 0.20,
+                yspeed6 = 0.20;
+            
+            (function drawFrame() {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // reverse if we hit the boundaries
+                /*if (ball.x >= canvas.width) {
+                    xspeed = -Math.abs(xspeed);
+                } else if (ball.x <= 0) {
+                    xspeed = Math.abs(xspeed);
+                }
+                
+                if (ball.y >= canvas.height) {
+                    yspeed = -Math.abs(yspeed);
+                } else if (ball.y <= 0) {
+                    yspeed = Math.abs(yspeed);
+                }*/
+                
+                ball3.x = ball2.x = ball.x = centerX + Math.sin(angleX) * range;
+                ball3.y = ball2.y = ball.y = centerY + Math.sin(angleY) * range;
+                angleX += xspeed;
+                angleY += yspeed;
+                ball.draw(context);
+                ball2.draw(context);
+                ball3.draw(context);
+                
+                
+                ball4.x = centerX + Math.sin(angleX4) * range;
+                ball4.y = centerY + Math.sin(angleY4) * range;
+                angleX4 += xspeed4;
+                angleY4 += yspeed4;
+                ball4.draw(context);
+                
+                
+                ball5.x = centerX + Math.sin(angleX5) * range + 10;
+                ball5.y = centerY + Math.sin(angleY5) * range + 10;
+                angleX5 += xspeed5;
+                angleY5 += yspeed5;
+                ball5.draw(context);
+                
+                
+                
+                ball6.x = centerX + Math.sin(angleX6) * range;
+                ball6.y = centerY + Math.sin(angleY6) * range;
+                angleX6 += xspeed6;
+                
+                // Reverse the direction
+                angleY6 -= yspeed6;
+                ball6.draw(context);
+            })();
+        };
+    </script>
+    
+  </body>
+</html>
