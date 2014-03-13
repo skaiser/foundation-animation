@@ -21,6 +21,8 @@
                 Math = window.Math,
                 canvas = document.getElementById('canvas'),
                 context = canvas.getContext('2d'),
+                scratch = document.createElement('canvas'),
+                scratchContext = scratch.getContext('2d'),
                 ball = new Ball(10),
                 angle = 0,
                 angle2 = 0,
@@ -38,26 +40,36 @@
             */
             
             //context.save();
-            function drawWave() {
+            function drawWave(ctx) {
                 //context.save();
-                context.beginPath();
-                //context.moveTo(xpos, ypos);
+                ctx.beginPath();
                 // Calculate new pos
                 //angle += yspeed;
+                
+                ctx.lineWidth = 5;
+                // TODO: how to get canvas width from the context
                 for (x = 0; x < canvas.width; x++) {
                     
                     // Use abs so wave gets drawn even when xspeed and yspeed are negative
                     xpos += Math.abs(xspeed);
                     angle += Math.abs(yspeed);
                     ypos = centerY / 2 + Math.sin(angle) * range;
-                    context.lineTo(xpos, ypos);
+                    //ctx.moveTo(xpos, ypos);
+                    ctx.lineTo(xpos, ypos);
                 }
-                context.stroke();
+                ctx.stroke();
                 
                 xpos = 0;
                 angle = 0;
                 //context.restore();
             }
+            
+            scratch.height = canvas.height;
+            scratch.width = canvas.width;
+            
+            // Pre-render sine wave on off-screen canvas so we only need to do this once
+            drawWave(scratchContext);
+            
             
             ball.x = 0;
             
@@ -65,7 +77,10 @@
                 window.requestAnimationFrame(drawFrame, canvas);
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
-                drawWave();
+                // Place pre-rendered canvas in our canvas
+                context.drawImage(scratch, 0, 0);
+                // Slower than above
+                //drawWave(context);
                 
                 // My additions
                 
@@ -81,6 +96,7 @@
                 ball.x += xspeed;
                 angle2 += yspeed;
                 ball.y = centerY / 2 + Math.sin(angle2) * range;
+                //ball.y = (0.5 + (centerY / 2 + Math.sin(angle2) * range)) << 0;
                 ball.draw(context);
             })();
         };
