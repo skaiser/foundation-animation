@@ -46,8 +46,9 @@
                 //angle += yspeed;
                 for (x = 0; x < canvas.width; x++) {
                     
-                    xpos += xspeed;
-                    angle += yspeed;
+                    // Use abs so wave gets drawn even when xspeed and yspeed are negative
+                    xpos += Math.abs(xspeed);
+                    angle += Math.abs(yspeed);
                     ypos = centerY / 2 + Math.sin(angle) * range;
                     context.lineTo(xpos, ypos);
                 }
@@ -65,30 +66,17 @@
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 
                 drawWave();
-                //context.beginPath();
-                //context.moveTo(xpos, ypos);
-                // Calculate new pos
-                //context.save();
-                //angle += yspeed;
-                //for (x = 0; x < canvas.width; x++) {
-                    
-                    //xpos += xspeed;
-                    //angle += yspeed;
-                    //ypos = centerY + Math.sin(angle) * range;
-                    //context.lineTo(xpos, ypos);
-                //}
-                //context.stroke();
-                //context.restore();
-                
                 
                 // My additions
                 
-                // reverse if we hit the boundaries
+                // reverse if we hit the boundaries. Adjusting yspeed keeps it on the same angle when going in reverse
                 if (ball.x > canvas.width) {
                     xspeed = -Math.abs(xspeed);
+                    yspeed = -Math.abs(yspeed);
                 } else if (ball.x < 0) {
                     xspeed = Math.abs(xspeed);
-                }
+                    yspeed = Math.abs(yspeed);
+                } 
                 
                 ball.x += xspeed;
                 angle2 += yspeed;
